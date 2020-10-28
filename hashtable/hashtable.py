@@ -22,6 +22,10 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        if capacity < MIN_CAPACITY:
+          return
+        self.capacity = capacity
+        self.list = [None] * capacity
 
 
     def get_num_slots(self):
@@ -54,6 +58,12 @@ class HashTable:
         """
 
         # Your code here
+        hash = 14695981039346656037
+        key = key.encode()
+        for a in key:
+          hash = hash ^ a
+          hash = hash * 1099511628211
+        return hash
 
 
     def djb2(self, key):
@@ -70,8 +80,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        #return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -81,6 +91,8 @@ class HashTable:
 
         Implement this.
         """
+        hash_key = self.hash_index(key)
+        self.list[hash_key] = value
         # Your code here
 
 
@@ -92,6 +104,11 @@ class HashTable:
 
         Implement this.
         """
+        hash_key = self.hash_index(key)
+        if self.list[hash_key]:
+          self.list[hash_key] = None
+        else:
+          print('Key not found')
         # Your code here
 
 
@@ -103,6 +120,8 @@ class HashTable:
 
         Implement this.
         """
+        hash_key = self.hash_index(key)
+        return self.list[hash_key]
         # Your code here
 
 

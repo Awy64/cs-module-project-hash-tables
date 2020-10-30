@@ -7,7 +7,49 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
+class LinkedList:
+    def __init__(self):
+        self.head = None
+    
+    def add_to_head(self, node):
+        node.next = self.head
+        self.head = node
+    
+    def find(self, key):
+        curr = self.head
+        while curr != None:
+            if curr.key == key:
+                return curr
+            else:
+                curr = curr.next
+        return curr
+    
+    def remove(self, key):
+        curr = self.head
+        if curr.key == key:
+            self.head = curr.next
+            curr.next = None
+        prev = curr
+        while curr != None:
+            if curr.key == key:
+                prev.next = curr.next
+                curr.next = None
+                return curr
+            else:
+                prev = curr
+                curr = curr.next
+        return None
 
+    def add_to_head_or_overwrite(self, node):
+        eNode = self.find(node.key)
+        if eNode != None:
+            eNode.value = node.value
+        else:
+            self.add_to_head(node)
+
+                
+
+        
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
@@ -19,7 +61,7 @@ class HashTable:
 
     Implement this.
     """
-
+    
     def __init__(self, capacity):
         # Your code here
         if capacity < MIN_CAPACITY:
@@ -38,6 +80,8 @@ class HashTable:
 
         Implement this.
         """
+        return len(self.list)
+        
         # Your code here
 
 
@@ -91,8 +135,13 @@ class HashTable:
 
         Implement this.
         """
+        ll = LinkedList()
         hash_key = self.hash_index(key)
-        self.list[hash_key] = value
+        if self.list[hash_key] == None:
+            self.list[hash_key] = ll
+            self.list[hash_key].add_to_head(HashTableEntry(key, value))
+        else:
+            return self.list[hash_key].add_to_head_or_overwrite(HashTableEntry(key, value))
         # Your code here
 
 
@@ -106,7 +155,7 @@ class HashTable:
         """
         hash_key = self.hash_index(key)
         if self.list[hash_key]:
-          self.list[hash_key] = None
+          self.list[hash_key].remove(key)
         else:
           print('Key not found')
         # Your code here
@@ -121,7 +170,11 @@ class HashTable:
         Implement this.
         """
         hash_key = self.hash_index(key)
-        return self.list[hash_key]
+        if self.list[hash_key] != None:
+            if self.list[hash_key].find(key) != None:
+                return self.list[hash_key].find(key).value
+        else:
+            return None
         # Your code here
 
 
@@ -133,6 +186,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        newlist = [None] * new_capacity
+        oldList = self.list
+        self.list = newlist
+        i = 0
+        while i < len(oldList):
+            if oldList[i] != None:
+                curr = oldList[i].head
+                while curr != None:
+                    self.put(curr.key, curr.value)
+                    curr = curr.next
+            i = i + 1
 
 
 

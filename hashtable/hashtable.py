@@ -91,6 +91,16 @@ class HashTable:
 
         Implement this.
         """
+        i = 0
+        count = 0
+        while i < len(self.list):
+            if self.list[i] != None:
+                curr = self.list[i].head
+                while curr != None:
+                    count = count + 1
+                    curr = curr.next
+            i = i + 1
+        return count / len(self.list)
         # Your code here
 
 
@@ -142,6 +152,8 @@ class HashTable:
             self.list[hash_key].add_to_head(HashTableEntry(key, value))
         else:
             return self.list[hash_key].add_to_head_or_overwrite(HashTableEntry(key, value))
+        if self.get_load_factor() > .7:
+            self.resize(self.capacity * 2)
         # Your code here
 
 
@@ -158,6 +170,9 @@ class HashTable:
           self.list[hash_key].remove(key)
         else:
           print('Key not found')
+        if self.get_load_factor() < .2:
+            if self.capacity != MIN_CAPACITY:
+                self.resize(self.capacity // 2)
         # Your code here
 
 
@@ -189,6 +204,7 @@ class HashTable:
         newlist = [None] * new_capacity
         oldList = self.list
         self.list = newlist
+        self.capacity = new_capacity
         i = 0
         while i < len(oldList):
             if oldList[i] != None:

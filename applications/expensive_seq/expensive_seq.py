@@ -1,18 +1,13 @@
 # Your code here
-    
+cashe = dict()
 def expensive_seq(x, y, z):
     # Your code here
-    dic = dict()
-    if ((x, y, z) not in dic):
-        dic[(x, y, z)] = mem(x, y, z)
-    return dic[(x, y, z)]
-    
 
-def mem(x, y, z):
     if x <= 0: 
         return y + z
-    if x >  0: 
-        return expensive_seq(x-1,y+1,z) + expensive_seq(x-2,y+2,z*2) + expensive_seq(x-3,y+3,z*3)
+    if (x, y, z) not in cashe:
+        cashe[(x, y, z)] = expensive_seq(x-1,y+1,z) + expensive_seq(x-2,y+2,z*2) + expensive_seq(x-3,y+3,z*3)
+    return cashe[(x, y, z)]
 
 
 

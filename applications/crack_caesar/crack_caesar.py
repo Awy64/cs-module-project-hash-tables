@@ -2,7 +2,7 @@
 # decode it.
 
 # Your code here
-creajkimport re #import regex
+import re #import regex
 
 with open("ciphertext.txt") as f: #open file and make is a string
   words = f.read()

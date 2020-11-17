@@ -1,6 +1,16 @@
 def no_dups(s):
     # Your code here
-
+    split = s.split()
+    dic = dict()
+    for sp in split:
+        dic[sp] = sp
+    str = ""
+    for sp in dic:
+        if str == "":
+            str = sp
+            continue
+        str = str + " " + sp
+    return str
 
 
 if __name__ == "__main__":
